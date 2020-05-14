@@ -18,12 +18,11 @@ func main() {
 		distance[i] = make([]int, N)
 		for j := 0; j < N; j++ {
 			distance[i][j] = N  // 移動コストを最大値+1で初期化
-			if i - j != 1 {
-				continue
+			if i - j == 1 {
+				// 隣接するノード同士のコストは 1
+				distance[i][j] = 1
+				distance[j][i] = 1
 			}
-			// 隣接するノード同士のコストは 1
-			distance[i][j] = 1
-			distance[j][i] = 1
 		}
 		distance[i][i] = 0
 	}
@@ -36,7 +35,10 @@ func main() {
 	for k := 0; k < N; k++ {
 		for i := 0; i < N; i++ {
 			for j := 0; j < N; j++ {
-				distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+				if i < j {
+					distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+					distance[j][i] = distance[i][j]
+				}
 			}
 		}
 	}
@@ -45,10 +47,9 @@ func main() {
 	count := make([]int, N-1)
 	for i := 0; i < N; i++ {
 		for j := 0; j < N; j++ {
-			if j <= i {
-				continue
+			if i < j {
+				count[distance[i][j] - 1] += 1
 			}
-			count[distance[i][j] - 1] += 1
 		}
 	}
 	
