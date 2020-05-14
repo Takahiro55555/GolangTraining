@@ -1,3 +1,8 @@
+/**
+ * 最短経路の練習
+ *
+ */
+
 package main
 
 import (
@@ -14,6 +19,7 @@ func main() {
 	N, X, Y := nextInt(sc), nextInt(sc), nextInt(sc)
 	
 	// コスト計算「Warshall-Floyd法」
+	// エッジのコストは可変でも行けるはず...
 	// 参考：https://qiita.com/ta-ka/items/a023a11efe17ab097433#warshall-floyd%E6%B3%95
 	distance := make([][]int, N)
 	for k := 0; k < N; k++ {
@@ -58,8 +64,10 @@ func main() {
 	count := make([]int, N-1)
 	for i := 0; i < N; i++ {
 		for j := 0; j < N; j++ {
-			if i < j {
+			if i > j {
 				count[distance[i][j]-1] += 1
+			} else {
+				break
 			}
 		}
 	}
