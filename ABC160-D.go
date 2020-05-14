@@ -22,8 +22,7 @@ func main() {
 				distance[i] = make([]int, N)
 				if i == (X-1) {
 					distance[i][Y-1] = 1
-				}
-				if i == (Y-1) {
+				} else if i == (Y-1) {
 					distance[i][X-1] = 1
 				}
 				if i > 0 {
