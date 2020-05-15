@@ -25,8 +25,8 @@ func main() {
 
 	N, X, Y := nextInt(sc), nextInt(sc), nextInt(sc)
 	
-	// コスト計算「Warshall-Floyd法」
-	// 今回、エッジのコストは全て１だが、可変でも行けるはず...
+	// 距離計算「Warshall-Floyd法」
+	// 今回、エッジの距離は全て１だが、可変でも行けるはず...
 	// 参考：https://qiita.com/ta-ka/items/a023a11efe17ab097433#warshall-floyd%E6%B3%95
 	distance := make([][]int, N)
 	counter := make([]int, N-1)
@@ -52,7 +52,7 @@ func main() {
 					}
 				}
 				distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
-				distance[j][i] = distance[i][j]  // 無向グラフのため、対角線対称行列
+				distance[j][i] = distance[i][j]  // 無向グラフのため、対称行列
 				if k == N-1 {
 					counter[distance[i][j]-1] += 1
 				}
