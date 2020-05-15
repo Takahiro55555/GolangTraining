@@ -29,6 +29,7 @@ func main() {
 	// 今回、エッジのコストは全て１だが、可変でも行けるはず...
 	// 参考：https://qiita.com/ta-ka/items/a023a11efe17ab097433#warshall-floyd%E6%B3%95
 	distance := make([][]int, N)
+	counter := make([]int, N-1)
 	for k := 0; k < N; k++ {
 		for i := 0; i < N; i++ {
 			if k == 0 {
@@ -38,50 +39,29 @@ func main() {
 				} else if i == (Y-1) {
 					distance[i][X-1] = 1
 				}
-				if i > 0 {
-					distance[i][i-1] = 1
-				}
-				if i < N-1 {
-					distance[i][i+1] = 1
-				}
 			}
-			for j := 0; j < N; j++ {
+			//NOTE: 有向グラフの場合は、 j < i の部分を j < N に変更する
+			for j := 0; j < i; j++ {
 				if k == 0 {
 					isSetedDistance := false
 					isSetedDistance = isSetedDistance || i == j
 					isSetedDistance = isSetedDistance || i == (X - 1) && j == (Y - 1)
 					isSetedDistance = isSetedDistance || j == (X - 1) && i == (Y - 1)
-					isSetedDistance = isSetedDistance || i == (j + 1) || i == (j - 1)
-					isSetedDistance = isSetedDistance || j == (i + 1) || j == (i - 1)
-					if !isSetedDistance {	
-						distance[i][j] = N - 1
+					if !isSetedDistance {
+						distance[i][j] = i - j
 					}
 				}
-				if i > j {
-					distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
-					distance[j][i] = distance[i][j]  // 無向グラフのため、対角線に対して線対称（表現が正しいのかは知らない...）
-				} else {
-					// 無向グラフのため、対角線に対して線対称（表現が正しいのかは知らない...）
-					break
+				distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+				distance[j][i] = distance[i][j]  // 無向グラフのため、対角線対称行列
+				if k == N-1 {
+					counter[distance[i][j]-1] += 1
 				}
 			}
 		}
 	}
-	
-	// カウント
-	count := make([]int, N-1)
-	for i := 0; i < N; i++ {
-		for j := 0; j < N; j++ {
-			if i > j {
-				count[distance[i][j]-1] += 1
-			} else {
-				break
-			}
-		}
-	}
-	
+
 	// 表示
-	for _, num := range count {
+	for _, num := range counter {
 		fmt.Println(num)
 	}
 
