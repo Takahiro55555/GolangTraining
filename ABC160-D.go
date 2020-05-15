@@ -30,7 +30,7 @@
 	 // 参考：https://qiita.com/ta-ka/items/a023a11efe17ab097433#warshall-floyd%E6%B3%95
 	 distance := make([][]int, N)
 	 counter := make([]int, N-1)
-	 ks := []int{0, X-1, Y-1}  // 0は隣接行列?を初期化するため
+	 ks := []int{0, X-1, Y-1}  // 0は初期化するため
 	 for index, k := range ks {
 		 for i := 0; i < N; i++ {
 			 if k == 0 {
